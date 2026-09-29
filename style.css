@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --space-1: #03040c;
+    --space-2: #090a18;
+    --space-3: #11132e;
+    --moon-light: #e6efff;
+    --moon-glow-1: rgba(180, 210, 255, 0.5);
+    --moon-glow-2: rgba(120, 160, 255, 0.25);
+    --moon-glow-3: rgba(70, 100, 200, 0.1);
+}
+
+body {
+    background-color: var(--space-1);
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    perspective: 1000px;
+}
+
+/* --- CÉU E NEBULOSAS --- */
+.sky-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.nebula-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(40, 20, 80, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(20, 60, 120, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(10, 40, 90, 0.3) 0%, transparent 60%);
+    filter: blur(30px);
+    opacity: 0;
+    animation: fadeInSky 4s ease-in-out forwards;
+}
+
+/* --- ESTRELAS --- */
+.star-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: fadeInSky 5s ease-in-out 1s forwards;
+}
+
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    will-change: transform, opacity;
+}
+
+.star.twinkle {
+    animation: starlight infinite alternate ease-in-out;
+}
+
+/* Estrelas Cadentes */
+.shooting-star {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
+    animation: shoot linear forwards;
+    opacity: 0;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* --- LUA PREMIUM --- */
+#moon-wrapper {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.moon-halo {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--moon-glow-2) 0%, transparent 70%);
+    filter: blur(20px);
+    animation: pulseHalo 8s infinite alternate ease-in-out;
+}
+
+#moon {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e6f0ff 15%, #b4ccf0 50%, #6885b5 100%);
+    box-shadow: 
+        0 0 20px 2px var(--moon-glow-1),
+        0 0 60px 15px var(--moon-glow-2),
+        0 0 140px 40px var(--moon-glow-3),
+        inset -15px -15px 35px rgba(0, 0, 0, 0.4),
+        inset 10px 10px 20px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: riseMoon 4s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+}
+
+/* --- TEXTO E GLASSMORPHISM --- */
+#content {
+    margin-top: 220px;
+    width: 100%;
+    max-width: 900px;
+    perspective: 1000px;
+}
+
+.glass-panel {
+    position: relative;
+    background: linear-gradient(135deg, rgba(20, 30, 70, 0.35) 0%, rgba(10, 15, 40, 0.15) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 55px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(100, 150, 255, 0.05) inset;
+    opacity: 0;
+    transform: translateY(40px) rotateX(5deg);
+    animation: floatUpBox 4s cubic-bezier(0.2, 0.8, 0.2, 1) 1.5s forwards;
+    overflow: hidden;
+}
+
+/* Reflexo sutil no vidro */
+.glass-reflection {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-25deg);
+    animation: glassShine 12s infinite;
+}
+
+h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.5;
+    color: #f7faff;
+    letter-spacing: 1.5px;
+    text-shadow: 
+        0 2px 15px rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(180, 210, 255, 0.4);
+    position: relative;
+    z-index: 2;
+}
+
+/* --- RODAPÉ --- */
+footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    opacity: 0;
+    animation: fadeInSky 3s ease-in-out 3s forwards;
+    text-shadow: 0 0 15px rgba(150, 200, 255, 0.5);
+}
+
+/* --- ANIMAÇÕES KEYFRAMES --- */
+@keyframes fadeInSky {
+    to { opacity: 1; }
+}
+
+@keyframes riseMoon {
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes floatUpBox {
+    to { 
+        opacity: 1; 
+        transform: translateY(0) rotateX(0deg); 
+    }
+}
+
+@keyframes starlight {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2) rotate(45deg); box-shadow: 0 0 8px 2px rgba(255,255,255,0.6); }
+}
+
+@keyframes pulseHalo {
+    0% { transform: scale(0.95); opacity: 0.6; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes glassShine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+@keyframes shoot {
+    0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; width: 0; }
+    30% { width: 100px; opacity: 1; }
+    100% { transform: translateX(-600px) translateY(600px) rotate(-45deg); opacity: 0; width: 0; }
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    #moon { width: 130px; height: 130px; }
+    .moon-halo { width: 200px; height: 200px; }
+    #content { margin-top: 170px; }
+    .glass-panel { padding: 40px 25px; border-radius: 24px; }
+    footer { font-size: 1.1rem; padding: 30px 20px; }
+}
+
+@media (max-width: 480px) {
+    #moon { width: 100px; height: 100px; }
+    .moon-halo { width: 150px; height: 150px; }
+    #content { margin-top: 130px; }
+    .glass-panel { padding: 35px 20px; border-radius: 20px; }
+    footer { font-size: 1rem; letter-spacing: 2px; }
+}
